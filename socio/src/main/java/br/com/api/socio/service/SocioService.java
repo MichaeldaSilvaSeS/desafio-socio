@@ -21,7 +21,6 @@ public class SocioService {
 
 	@Transactional
     public void adiciona(Socio socio) {
-		System.out.println(socio);
 		if(socioRepository.verificarSeExisteAtivo(socio.getEmail()))
 			throw new SocioJaExiste();
 		

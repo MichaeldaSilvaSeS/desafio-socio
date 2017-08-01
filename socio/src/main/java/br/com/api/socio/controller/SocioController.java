@@ -2,6 +2,8 @@ package br.com.api.socio.controller;
 
 import java.util.Collection;
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +41,14 @@ public class SocioController {
 	
 	@ApiOperation(value = "Salva socio", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PostMapping(value="/", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
-    public void adiciona(@RequestBody SocioDto socioDto) {
+    public void adiciona(@Valid @RequestBody SocioDto socioDto) {
 		Socio socio = mapperDtoToModel.map(socioDto,Socio.class);
 		socioService.adiciona(socio);
 	}
 	
 	@ApiOperation(value = "Atualiza informacoes do socio", produces = MediaType.APPLICATION_JSON_VALUE)
     @PutMapping(value="/{idSocio}", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
-    public void atualiza(@PathVariable Long idSocio, @RequestBody SocioDto socioDto) {
+    public void atualiza(@PathVariable Long idSocio, @Valid @RequestBody SocioDto socioDto) {
     	socioDto.setId_socio(idSocio);
 		socioService.atualiza(mapperDtoToModel.map(socioDto,Socio.class));
     }
