@@ -15,13 +15,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.api.socio.controller.dto.SocioDto;
 import br.com.api.socio.model.Socio;
 import br.com.api.socio.platform.mapper.MapModel;
 import br.com.api.socio.platform.mapper.MapModel.Mapper;
+import br.com.api.socio.service.CampanhaService;
 import br.com.api.socio.service.SocioService;
+import br.com.api.socio.transfer.CampanhaAssociadoDto;
+import br.com.api.socio.transfer.SocioDto;
 import io.swagger.annotations.ApiOperation;
 
 @RequestMapping("/v1/socio")
@@ -30,6 +33,9 @@ public class SocioController {
 	
 	@Autowired
 	private SocioService socioService;
+	
+	@Autowired
+	private CampanhaService campanhaService;
 	
 	@Autowired
 	@MapModel(Mapper.DTO_TO_MODEL)
@@ -58,17 +64,21 @@ public class SocioController {
     public void remove(@PathVariable Long idSocio) {
     	socioService.remove(idSocio);
     }
-    
+
 	@ApiOperation(value = "Recupera informacoes do socio", produces = MediaType.APPLICATION_JSON_VALUE)
-    @GetMapping(value="/{idSocio}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    @GetMapping(value="/{idSocio:\\d+}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public SocioDto selecionaPorId(@PathVariable Long idSocio) {
     	return mapperModelToDto.map(socioService.selecionaPorId(idSocio),SocioDto.class);
     }
     
 	@ApiOperation(value = "Recupera informacoes do socio por email", produces = MediaType.APPLICATION_JSON_VALUE)
-    @GetMapping(name="/email/{email}", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
-    public SocioDto selecionaPorEmail(@PathVariable String email) throws Exception {
-	    return mapperModelToDto.map(socioService.selecionaPorEmail(email),SocioDto.class);    	
+    @GetMapping(value="/email", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+    public CampanhaAssociadoDto selecionaPorEmail(@RequestParam String email) throws Exception {
+		CampanhaAssociadoDto campanhaAssociadoDto = 
+				mapperModelToDto.map(socioService.selecionaPorEmail(email),CampanhaAssociadoDto.class);
+		
+		campanhaAssociadoDto.setCampanhas(campanhaService.listarCampanhas(campanhaAssociadoDto.getId_socio()));		
+	    return campanhaAssociadoDto;    	
     }
     
 	@ApiOperation(value = "Lista do todos socios ativos", produces = MediaType.APPLICATION_JSON_VALUE)

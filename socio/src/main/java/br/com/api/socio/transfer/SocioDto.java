@@ -1,4 +1,4 @@
-package br.com.api.socio.controller.dto;
+package br.com.api.socio.transfer;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;

@@ -8,7 +8,8 @@ import org.junit.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
-import br.com.api.socio.controller.dto.SocioDto;
+import br.com.api.socio.teste.ApiTeste;
+import br.com.api.socio.transfer.SocioDto;
 
 public class SocioApiTeste extends ApiTeste {
 	

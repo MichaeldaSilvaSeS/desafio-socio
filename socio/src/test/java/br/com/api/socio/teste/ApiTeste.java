@@ -1,4 +1,4 @@
-package br.com.api.socio.teste.controller;
+package br.com.api.socio.teste;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

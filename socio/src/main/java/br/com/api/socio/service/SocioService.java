@@ -15,10 +15,7 @@ import br.com.api.socio.repository.SocioRepository;
 public class SocioService {
 	@Autowired
 	private SocioRepository socioRepository;
-	/*
-	@Autowired
-	private CampanhaServico campanhaServico;*/
-
+	
 	@Transactional
     public void adiciona(Socio socio) {
 		if(socioRepository.verificarSeExisteAtivo(socio.getEmail()))
@@ -55,7 +52,7 @@ public class SocioService {
     public Socio selecionaPorEmail(String email) throws Exception {
     	if(!socioRepository.verificarSeExistePorEmail(email))
     		throw new SocioNaoExiste();
-    	
+    	   	
     	return socioRepository.selecionarPorEmail(email);
     }
     
